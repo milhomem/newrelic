@@ -10,7 +10,8 @@ class EventCollection extends \ArrayObject implements \JsonSerializable
         return $this;
     }
 
-    public function jsonSerialize() {
+    public function jsonSerialize()
+    {
         return $this->getArrayCopy();
     }
 }

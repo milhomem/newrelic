@@ -52,7 +52,10 @@ class InsightsTest extends \PHPUnit_Framework_TestCase
 
         $promise->wait();
         $request = $this->requestContainer[0]['request'];
-        $this->assertEquals('[{"eventType":"Purchase","account":3,"amount":259.54}]', $request->getBody()->getContents());
+        $this->assertEquals(
+            '[{"eventType":"Purchase","account":3,"amount":259.54}]',
+            $request->getBody()->getContents()
+        );
     }
 
     public function provideInvalidEventTypes()
