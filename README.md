@@ -1,6 +1,8 @@
 New Relic Insights Library
 ==========================
 
+[![Build Status](https://travis-ci.org/easytaxibr/newrelic-insights.svg?branch=master)](https://travis-ci.org/easytaxibr/newrelic-insights)
+
 Use this library to easily post custom events to New Relic Insights.
 
 ```php
