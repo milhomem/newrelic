@@ -6,11 +6,15 @@ New Relic Insights Library
 Use this library to easily post custom events to New Relic Insights.
 
 ```php
+<?php
+
+use EasyTaxi\NewRelic\Insights;
+
 $client = new Client([
     #You need to change it to your account number
     'base_uri' => 'https://insights-collector.newrelic.com/v1/accounts/99999/'
 ]);
-$this->newRelicInsights = new NewRelic\Insights($client, 'YOUR_KEY_HERE');
+$this->newRelicInsights = new EasyTaxi\NewRelic\Insights($client, 'YOUR_KEY_HERE');
 
 $events = new Insights\EventCollection();
 
