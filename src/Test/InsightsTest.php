@@ -9,7 +9,9 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Promise;
 use GuzzleHttp\Middleware;
-use NewRelic\Entity\Insights;
+use EasyTaxi\NewRelic\Insights;
+use EasyTaxi\NewRelic\Entity\Insights\EventCollection;
+use EasyTaxi\NewRelic\Entity\Insights\Event;
 
 class InsightsTest extends \PHPUnit_Framework_TestCase
 {
@@ -28,12 +30,12 @@ class InsightsTest extends \PHPUnit_Framework_TestCase
             'handler' => $handler,
             'base_uri' => 'http://WhoCares'
         ]);
-        $this->newRelicInsights = new NewRelic\Insights($client, 'Mum-Ha');
+        $this->newRelicInsights = new Insights($client, 'Mum-Ha');
     }
 
     public function testCanSendAsyncRequest()
     {
-        $promise = $this->newRelicInsights->sendEvent(new Insights\EventCollection());
+        $promise = $this->newRelicInsights->sendEvent(new EventCollection());
 
         $response = $promise->wait();
         $this->assertEquals(200, $response->getStatusCode());
@@ -41,11 +43,11 @@ class InsightsTest extends \PHPUnit_Framework_TestCase
 
     public function testFulfillMessageInterface()
     {
-        $event = new Insights\Event();
+        $event = new Event();
         $event->eventType = "Purchase";
         $event->account = 3;
         $event->amount = 259.54;
-        $events = new Insights\EventCollection();
+        $events = new EventCollection();
         $events->add($event);
 
         $promise = $this->newRelicInsights->sendEvent($events);
@@ -73,9 +75,9 @@ class InsightsTest extends \PHPUnit_Framework_TestCase
      */
     public function testEventType($type)
     {
-        $event = new Insights\Event();
+        $event = new Event();
         $event->eventType = $type;
-        $events = new Insights\EventCollection();
+        $events = new EventCollection();
         $events->add($event);
 
         $this->newRelicInsights->sendEvent($events);

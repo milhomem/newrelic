@@ -1,6 +1,6 @@
 <?php
 
-namespace NewRelic\Entity\Insights;
+namespace EasyTaxi\NewRelic\Entity\Insights;
 
 use Respect\Validation\Validator;
 
