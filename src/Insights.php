@@ -1,9 +1,9 @@
 <?php
 
-namespace NewRelic;
+namespace EasyTaxi\NewRelic;
 
 use GuzzleHttp\Client;
-use NewRelic\Entity\Insights\EventCollection;
+use EasyTaxi\NewRelic\Entity\Insights\EventCollection;
 use Respect\Validation\Validator;
 
 class Insights

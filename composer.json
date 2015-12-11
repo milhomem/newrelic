@@ -2,8 +2,8 @@
     "name": "easytaxibr/newrelic-insights",
     "description": "A simple wrapper for NewRelic Insights API",
     "autoload": {
-        "psr-0" : {
-            "NewRelic" : "src"
+        "psr-4" : {
+            "EasyTaxi\\NewRelic\\" : "src"
         }
     },
     "require": {
