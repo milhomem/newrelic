@@ -1,6 +1,15 @@
 {
     "name": "easytaxibr/newrelic-insights",
     "description": "A simple wrapper for NewRelic Insights API",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Marcelo Milhomem",
+            "email": "marcelo.milhomem@easytaxi.com.br",
+            "homepage": "http://easytaxi.com",
+            "role": "Engineer"
+        }
+    ],
     "autoload": {
         "psr-4" : {
             "EasyTaxi\\NewRelic\\" : "src"
