@@ -34,6 +34,11 @@ $promise = $this->newRelicInsights->sendEvent($events);
 
 > You can find your key at Insights https://insights.newrelic.com/accounts/99999/manage/add_data
 
+## Configuring
+
+* Your `base_uri` MUST end with trailing slash `/`
+* You MUST replace `99999` with your account number
+
 ## Installing
 
 The recommended way to install is through

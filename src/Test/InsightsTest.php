@@ -17,18 +17,19 @@ class InsightsTest extends \PHPUnit_Framework_TestCase
 {
     private $newRelicInsights;
     private $requestContainer;
+    private $handler;
 
     public function setUp()
     {
         $this->requestContainer = [];
         $history = Middleware::history($this->requestContainer);
         $mock = new MockHandler([new Response(200, [])]);
-        $handler = HandlerStack::create($mock);
-        $handler->push($history);
+        $this->handler = HandlerStack::create($mock);
+        $this->handler->push($history);
 
         $client = new Client([
-            'handler' => $handler,
-            'base_uri' => 'http://WhoCares'
+            'handler' => $this->handler,
+            'base_uri' => 'http://WhoCares/'
         ]);
         $this->newRelicInsights = new Insights($client, 'Mum-Ha');
     }
@@ -81,5 +82,20 @@ class InsightsTest extends \PHPUnit_Framework_TestCase
         $events->add($event);
 
         $this->newRelicInsights->sendEvent($events);
+    }
+
+    public function testFullInsightsUrlAreCalledFollowingRFC3986()
+    {
+        $client = new Client([
+            'handler' => $this->handler,
+            'base_uri' => 'http://WhoCares/base/path/'
+        ]);
+        $this->newRelicInsights = new Insights($client, 'Mum-Ha');
+
+        $promise = $this->newRelicInsights->sendEvent(new EventCollection());
+
+        $promise->wait();
+        $lastRequestPath = $this->requestContainer[0]['request']->getUri()->getPath();
+        $this->assertEquals('/base/path/events', $lastRequestPath);
     }
 }
