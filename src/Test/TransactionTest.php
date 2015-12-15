@@ -2,6 +2,7 @@
 
 namespace EasyTaxi\NewRelic;
 
+use EasyTaxi\NewRelic\Config\TransactionConfig;
 use EasyTaxi\NewRelic\Test\Stub\Foo;
 
 class TransactionTest extends \PHPUnit_Framework_TestCase
@@ -16,8 +17,10 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $applicationName = 'Panthro';
-        $this->transaction = new Transaction(new Foo(), $applicationName);
+        $config = new TransactionConfig();
+        $config->applicationName = 'Panthro';
+        $config->transactionName = 'Jaga';
+        $this->transaction = new Transaction(new Foo(), $config);
         $this->transaction->extensionAvailable = true;
         self::$endTransaction = false;
     }
@@ -33,10 +36,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     {
         $this->transaction->bar();
 
-        $this->assertEquals(
-            sprintf('%s::%s', Foo::class, 'bar'),
-            self::$transactionName
-        );
+        $this->assertEquals('Jaga', self::$transactionName);
     }
 
     public function testCanAddComplexArgumentsToNewRelic()
@@ -117,9 +117,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
      */
     public function testNonObject()
     {
-        $applicationName = 'Panthro';
-
-        new Transaction('Cheetara', $applicationName);
+        new Transaction('Cheetara', new TransactionConfig());
     }
 }
 

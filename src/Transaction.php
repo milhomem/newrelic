@@ -2,31 +2,42 @@
 
 namespace EasyTaxi\NewRelic;
 
+use EasyTaxi\NewRelic\Config\TransactionConfig;
+use EasyTaxi\NewRelic\Formatter\ArgumentsFormatter;
+use EasyTaxi\NewRelic\Formatter\FormatterInterface;
+
 class Transaction
 {
     private $instance;
-    private $appName;
+    private $config;
+    private $formatter;
 
-    public function __construct($instance, $appName)
+    public function __construct($instance, TransactionConfig $config)
     {
         if (!is_object($instance)) {
             throw new \InvalidArgumentException('You need to provide a instance of an object');
         }
 
         $this->instance = $instance;
-        $this->appName = $appName;
+        $this->config = $config;
+        $this->formatter = new ArgumentsFormatter();
 
         if (!extension_loaded('newrelic')) {
             throw new \RuntimeException('NewRelic extension is not loaded');
         }
     }
 
+    public function setFormatter(FormatterInterface $formatter)
+    {
+        $this->formatter = $formatter;
+    }
+
     public function __call($name, $arguments)
     {
-        newrelic_start_transaction($this->appName);
-        $transactionName = sprintf('%s::%s', get_class($this->instance), $name);
-        newrelic_name_transaction($transactionName);
-        $this->sendArgumentsToNewRelic($arguments);
+        newrelic_start_transaction($this->config->applicationName);
+        newrelic_name_transaction($this->config->transactionName);
+        $customParameters = $this->formatter->format($arguments);
+        $this->addNewRelicParameter($customParameters);
 
         try {
             return call_user_func_array([$this->instance, $name], $arguments);
@@ -38,21 +49,9 @@ class Transaction
         }
     }
 
-    private function sendArgumentsToNewRelic(array $arguments)
+    private function addNewRelicParameter($customParameters)
     {
-        foreach ($arguments as $key => $value) {
-            if (null === $value || is_scalar($value)) {
-                $argument = [$key => $value];
-            } else {
-                $argument = $value;
-            }
-            $this->addNewRelicParameter($argument);
-        }
-    }
-
-    private function addNewRelicParameter($argument)
-    {
-        foreach ($argument as $key => $value) {
+        foreach ($customParameters as $key => $value) {
             if (null === $value || is_scalar($value)) {
                 newrelic_add_custom_parameter($key, $value);
             } else {
