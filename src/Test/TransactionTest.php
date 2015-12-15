@@ -14,6 +14,7 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     public static $endTransaction;
     public static $exceptionMessage;
     public static $exception;
+    public static $applicationName;
 
     public function setUp()
     {
@@ -26,6 +27,13 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testHasAbilityToSetApplicationName()
+    {
+        $this->transaction->bar();
+
+        $this->assertEquals('Panthro', self::$applicationName);
+    }
+
+    public function testStartATransaction()
     {
         $this->transaction->bar();
 
@@ -151,4 +159,9 @@ function newrelic_notice_error($exceptionMessage, \Exception $exception = null)
 function extension_loaded($extension)
 {
     return true;
+}
+
+function newrelic_set_appname($appName)
+{
+    TransactionTest::$applicationName = $appName;
 }

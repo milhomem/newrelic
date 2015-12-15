@@ -40,6 +40,7 @@ class Transaction
         $this->addNewRelicParameter($customParameters);
 
         try {
+            newrelic_set_appname($this->config->applicationName);
             return call_user_func_array([$this->instance, $name], $arguments);
         } catch (\Exception $genericException) {
             newrelic_notice_error($genericException->getMessage(), $genericException);
