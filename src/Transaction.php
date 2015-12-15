@@ -34,13 +34,13 @@ class Transaction
 
     public function __call($name, $arguments)
     {
+        newrelic_set_appname($this->config->applicationName);
         newrelic_start_transaction($this->config->applicationName);
         newrelic_name_transaction($this->config->transactionName);
         $customParameters = $this->formatter->format($arguments);
         $this->addNewRelicParameter($customParameters);
 
         try {
-            newrelic_set_appname($this->config->applicationName);
             return call_user_func_array([$this->instance, $name], $arguments);
         } catch (\Exception $genericException) {
             newrelic_notice_error($genericException->getMessage(), $genericException);
