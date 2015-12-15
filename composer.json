@@ -1,6 +1,6 @@
 {
-    "name": "easytaxibr/newrelic-insights",
-    "description": "A simple wrapper for NewRelic Insights API",
+    "name": "easytaxibr/newrelic",
+    "description": "NewRelic Tools for PHP",
     "license": "MIT",
     "authors": [
         {
