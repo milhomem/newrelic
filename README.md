@@ -1,7 +1,44 @@
-New Relic Insights Library
+New Relic Libraries
 ==========================
 
-[![Build Status](https://travis-ci.org/easytaxibr/newrelic-insights.svg?branch=master)](https://travis-ci.org/easytaxibr/newrelic-insights)
+[![Build Status](https://travis-ci.org/easytaxibr/newrelic.svg?branch=master)](https://travis-ci.org/easytaxibr/newrelic)
+
+New Relic Transaction Library
+==========================
+
+Use this library to report background jobs or long running scripts to New Relic APM.
+
+```php
+<?php
+
+namespace EmailConsumer
+
+class EmailConsumer
+{
+    public function sendEmail($recipient, $body, $header)
+    {
+        //Send email
+    }
+}
+
+namespace A\B;
+
+use EasyTaxi\NewRelic;
+use EmailConsumer;
+
+$consumer = new EmailConsumer();
+
+$transactionConfig = new NewRelic\Config\TransactionConfig();
+$transactionConfig->applicationName = 'Background Jobs';
+$transactionConfig->transactionName = 'consumer::sendEmail';
+$consumerMonitored = new NewRelic\Transaction($consumer, $transactionConfig);
+$consumerMonitored->sendEmail('Spock', 'James', 'Tiberius');
+```
+
+> You MUST have an agent configured and running on the server
+
+New Relic Insights Library
+==========================
 
 Use this library to easily post custom events to New Relic Insights.
 
@@ -30,6 +67,7 @@ $event2->account = 4;
 $events->add($event2);
 
 $promise = $this->newRelicInsights->sendEvent($events);
+$promise->wait();
 ```
 
 > You can find your key at Insights https://insights.newrelic.com/accounts/99999/manage/add_data
@@ -52,5 +90,5 @@ curl -sS https://getcomposer.org/installer | php
 Next, run the Composer command to install the latest stable version:
 
 ```bash
-composer.phar require easytaxibr/newrelic-insights
+composer.phar require easytaxibr/newrelic
 ```
