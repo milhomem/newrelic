@@ -11,7 +11,7 @@ Use this library to report background jobs or long running scripts to New Relic 
 ```php
 <?php
 
-namespace EmailConsumer
+namespace EmailConsumer;
 
 class EmailConsumer
 {
@@ -28,11 +28,13 @@ use EmailConsumer;
 
 $consumer = new EmailConsumer();
 
-$transactionConfig = new NewRelic\Config\TransactionConfig();
-$transactionConfig->applicationName = 'Background Jobs';
-$transactionConfig->transactionName = 'consumer::sendEmail';
-$consumerMonitored = new NewRelic\Transaction($consumer, $transactionConfig);
-$consumerMonitored->sendEmail('Spock', 'James', 'Tiberius');
+while (true) {
+    $transactionConfig = new NewRelic\Config\TransactionConfig();
+    $transactionConfig->applicationName = 'Background Jobs';
+    $transactionConfig->transactionName = 'consumer::sendEmail';
+    $consumerMonitored = new NewRelic\Transaction($consumer, $transactionConfig);
+    $consumerMonitored->sendEmail('Spock', 'James', 'Tiberius');
+}
 ```
 
 > You MUST have an agent configured and running on the server
