@@ -2,6 +2,7 @@ New Relic Libraries
 ==========================
 
 [![Build Status](https://travis-ci.org/easytaxibr/newrelic.svg?branch=master)](https://travis-ci.org/easytaxibr/newrelic)
+[![Code Coverage](https://scrutinizer-ci.com/g/easytaxibr/newrelic/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/easytaxibr/newrelic/?branch=master)
 
 New Relic Transaction Library
 ==========================
