@@ -9,6 +9,7 @@ use Respect\Validation\Validator;
 class Insights
 {
     private $key;
+    private $client;
 
     public function __construct(Client $client, $key)
     {
