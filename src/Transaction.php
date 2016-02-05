@@ -3,6 +3,8 @@
 namespace EasyTaxi\NewRelic;
 
 use EasyTaxi\NewRelic\Config\TransactionConfig;
+use EasyTaxi\NewRelic\Exception\ExpectedCallerInstanceException;
+use EasyTaxi\NewRelic\Exception\NotLoadedNewRelicExtensionException;
 use EasyTaxi\NewRelic\Formatter\ArgumentsFormatter;
 use EasyTaxi\NewRelic\Formatter\FormatterInterface;
 
@@ -15,7 +17,7 @@ class Transaction
     public function __construct($instance, TransactionConfig $config)
     {
         if (!is_object($instance)) {
-            throw new \InvalidArgumentException('You need to provide a instance of an object');
+            throw new ExpectedCallerInstanceException();
         }
 
         $this->instance = $instance;
@@ -23,7 +25,7 @@ class Transaction
         $this->formatter = new ArgumentsFormatter();
 
         if (!extension_loaded('newrelic')) {
-            throw new \RuntimeException('NewRelic extension is not loaded');
+            throw new NotLoadedNewRelicExtensionException();
         }
     }
 
