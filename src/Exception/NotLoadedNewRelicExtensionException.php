@@ -9,3 +9,4 @@ class NotLoadedNewRelicExtensionException extends \RuntimeException
         parent::__construct($message, $code);
     }
 }
+
