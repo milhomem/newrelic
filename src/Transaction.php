@@ -3,7 +3,7 @@
 namespace EasyTaxi\NewRelic;
 
 use EasyTaxi\NewRelic\Config\TransactionConfig;
-use EasyTaxi\NewRelic\Exception\ExpectedCallerInstanceException;
+use EasyTaxi\NewRelic\Exception\InvalidCallerInstanceException;
 use EasyTaxi\NewRelic\Exception\NotLoadedNewRelicExtensionException;
 use EasyTaxi\NewRelic\Formatter\ArgumentsFormatter;
 use EasyTaxi\NewRelic\Formatter\FormatterInterface;
@@ -17,7 +17,7 @@ class Transaction
     public function __construct($instance, TransactionConfig $config)
     {
         if (!is_object($instance)) {
-            throw new ExpectedCallerInstanceException();
+            throw new InvalidCallerInstanceException();
         }
 
         $this->instance = $instance;
