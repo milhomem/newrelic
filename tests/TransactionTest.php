@@ -15,14 +15,15 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     public static $exceptionMessage;
     public static $exception;
     public static $applicationName;
+    public static $extensionAvailable;
 
     public function setUp()
     {
         $config = new TransactionConfig();
         $config->applicationName = 'Panthro';
         $config->transactionName = 'Jaga';
+        self::$extensionAvailable = true;
         $this->transaction = new Transaction(new Foo(), $config);
-        $this->transaction->extensionAvailable = true;
         self::$endTransaction = false;
     }
 
@@ -127,6 +128,16 @@ class TransactionTest extends \PHPUnit_Framework_TestCase
     {
         new Transaction('Cheetara', new TransactionConfig());
     }
+
+    /**
+     * @expectedException \EasyTaxi\NewRelic\Exception\NotLoadedNewRelicExtensionException
+     */
+    public function testExceptionIfExtensionIsNotLoaded()
+    {
+        self::$extensionAvailable = false;
+
+        new Transaction(new \StdClass, new TransactionConfig());
+    }
 }
 
 function newrelic_start_transaction($appName)
@@ -158,7 +169,7 @@ function newrelic_notice_error($exceptionMessage, \Exception $exception = null)
 
 function extension_loaded($extension)
 {
-    return true;
+    return TransactionTest::$extensionAvailable;
 }
 
 function newrelic_set_appname($appName)
