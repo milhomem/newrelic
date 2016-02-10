@@ -9,4 +9,3 @@ class InvalidCallerInstanceException extends \InvalidArgumentException
         parent::__construct($message, $code);
     }
 }
-
