@@ -49,6 +49,7 @@ Use this library to easily post custom events to New Relic Insights.
 <?php
 
 use EasyTaxi\NewRelic\Insights;
+use Guzzle\Http\Client;
 
 $client = new Client([
     #You need to change it to your account number
