@@ -48,24 +48,24 @@ Use this library to easily post custom events to New Relic Insights.
 ```php
 <?php
 
-use EasyTaxi\NewRelic\Insights;
-use Guzzle\Http\Client;
+use EasyTaxi\NewRelic;
+use GuzzleHttp\Client;
 
 $client = new Client([
     #You need to change it to your account number
     'base_uri' => 'https://insights-collector.newrelic.com/v1/accounts/99999/'
 ]);
-$this->newRelicInsights = new EasyTaxi\NewRelic\Insights($client, 'YOUR_KEY_HERE');
+$this->newRelicInsights = new NewRelic\Insights($client, 'YOUR_KEY_HERE');
 
-$events = new Insights\EventCollection();
+$events = new NewRelic\Entity\Insights\EventCollection();
 
-$event = new Insights\Event();
+$event = new NewRelic\Entity\Insights\Event();
 $event->eventType = "Purchase";
 $event->account = 3;
 $event->amount = 259.54;
 $events->add($event);
 
-$event2 = new Insights\Event();
+$event2 = new NewRelic\Entity\Insights\Event();
 $event2->eventType = "Purchase";
 $event2->account = 4;
 $events->add($event2);
